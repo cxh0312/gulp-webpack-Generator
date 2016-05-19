@@ -1,1 +1,5 @@
-console.log('dddd')
+'use strict';
+
+module.exports = {
+
+}

@@ -30,6 +30,7 @@
     "gulp-webpack-sourcemaps": "^0.3.0",
     "imagemin-pngquant": "^5.0.0",
     "optimist": "^0.6.1",
+    "vinyl-named": "^1.1.0",
     "webpack": "^1.13.0"
   },
   "dependencies": {

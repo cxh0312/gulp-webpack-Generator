@@ -1,0 +1,39 @@
+body{
+	font-size:14px;
+}
+/*一些有用的类*/
+.clear:after{
+	content:'';
+	display:table;
+	clear:both;
+}
+.fl{
+	float:left;
+}
+.fr{
+	float:right;
+}
+.tc{
+	text-align:center;
+}
+.tl{
+	text-align:left;
+}
+.tr{
+	text-align:right;
+}
+.oneline{
+	text-overflow:ellipsis;
+	overflow:hidden;
+	word-break:break-all;
+	white-space:nowrap;
+}
+.bg{
+	background-size:100% auto;
+	background-position: 0 0;
+	background-repeat:no-repeat;
+}
+/*px转rem*/
+@function p2r ($px) {
+	@return $px / 64;
+}

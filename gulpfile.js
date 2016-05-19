@@ -33,12 +33,14 @@ var sass = require("gulp-sass");
 /** [append 添加md5作为版本号  ?rev=@@hash] */
 var append = require('gulp-rev-append');
 
+var named = require('vinyl-named');
+
 
 var comeIn = {
-    js: "dev/js/index.js",
-    image: "div/image/*.{png,jpg,gif,ico}",
+    js: ["dev/js/index.js"],
+    image: "dev/image/*.{png,jpg,gif,ico}",
     sass: "dev/sass/*.scss",
-    html: 'dev/index.html'
+    html: 'dev/*.html'
 };
 var output = {
     js: "./product/js/",
@@ -48,17 +50,18 @@ var output = {
 };
 /**
  * [env 当前环境是正式还是测试环境]
+ * 默认为测试环境
  * @type {[type]}
  */
-var env = argv.env;
+var env = argv.env || argv.ENV;
 /**
  * 目标：对JS模块化
  */
 gulp.task("js", function() {
     gulp.src(comeIn.js)
+        .pipe(named())
         .pipe(webpack())
-        .pipe(env !== "beta" ? uglify() : stream())
-        .pipe(rename("index.js"))
+        .pipe(env == "pro" ? uglify() : stream())
         .pipe(gulp.dest(output.js))
         .pipe(reload({ stream: true }));
 });
@@ -66,13 +69,11 @@ gulp.task("js", function() {
  * [sass编译]
  */
 gulp.task("sass", function() {
-    gulp.src(comeIn.sass)
-        .pipe(sass())
+    gulp.src(comeIn.sass) .pipe(sass())
         .pipe(autoprefixer({
             browsers: ["> 5%"]
         }))
-        .pipe(env !== "beta" ? minifyCSS() : stream())
-        .pipe(rename("index.css"))
+        .pipe(env == "pro" ? minifyCSS() : stream())
         .pipe(gulp.dest(output.css))
         .pipe(reload({ stream: true }));
 });
@@ -82,14 +83,14 @@ gulp.task("sass", function() {
 gulp.task('html', function() {
     gulp.src(comeIn.html)
         .pipe(append())
-        .pipe(env !== "beta" ? htmlmin({ collapseWhitespace: true }) : stream())
+        .pipe(env == "pro" ? htmlmin({ collapseWhitespace: true }) : stream())
         .pipe(gulp.dest(output.html))
         .pipe(reload({ stream: true }))
 });
 /**
  * [默认任务，进行html,js,sass,watch等任务]
  */
-gulp.task('default', ["html", "js", "sass", "watch"], function() {
+gulp.task('default', ["html", "js", "sass","image","watch"], function() {
     browserSync.init({
         server: {
             baseDir: "./product"

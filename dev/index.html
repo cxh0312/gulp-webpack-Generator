@@ -7,18 +7,12 @@
 	<title></title>
 	<link rel="stylesheet" href="css/index.css">
 	<script>
-		var wd = window.screen.width;
-		document.querySelector("html").style.fontSize = wd / 6.4 +"px";
+		var wd = window.innerWidth;
+		wd = wd > 540 ? 540:wd;
+		document.querySelector("html").style.fontSize = wd / 10 +"px";
 	</script>
-	<style>
-		body{
-			height: 100rem;
-			background-color:#eee;
-		}
-	</style>
 </head>
 <body>
-	<app></app>
 	<script src="js/index.js?rev=@@hash"></script>
 </body>
 </html>
