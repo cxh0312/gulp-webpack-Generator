@@ -15,3 +15,5 @@ gulp --env=beta 运行测试环境下的Gulp任务
 
 ### Tips
 1、gulpfile.js中的comeIn和output分别是文件进入和处理之后的路径
+2、默认运行gulp,执行html,sass,image,js等任务
+3、默认为测试环境，打包的静态文件不压缩，需要压缩可以添加参数 --env=pro 或者 --ENV=pro
