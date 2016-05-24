@@ -1,5 +1,7 @@
 <template>
-	<p>曹小和年龄：{{age}}</p>
+	<div class="container">
+		<p>曹小和年龄：{{age}}</p>
+	</div>
 </template>
 
 <script>
@@ -12,3 +14,10 @@ module.exports =  {
   }
 };
 </script>
+<style lang="sass">
+	@fontSize:48px;
+	.container{
+		background-color:#eee;
+		p{font-size:fontSize;}
+	}
+</style>

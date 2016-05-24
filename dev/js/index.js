@@ -24,7 +24,7 @@
 
 var Vue = require('vue');
 var App = require('../vue/component/app.vue');
-Vue.debug = true;
+Vue.config.debug = true;
 var vm = new Vue({
 	el:"body",
 	components:{
