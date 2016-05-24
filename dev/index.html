@@ -6,13 +6,17 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<title>Gulp+webpack</title>
 	<link rel="stylesheet" href="css/index.css">
+	<script src="http://192.168.1.102:3333/reload.js"></script>
 	<script>
-		var wd = window.innerWidth;
-		wd = wd > 540 ? 540:wd;
-		document.querySelector("html").style.fontSize = wd / 10 +"px";
+		;(function(){
+			var wd = window.innerWidth;
+			wd = wd > 540 ? 540:wd;
+			document.querySelector("html").style.fontSize = wd / 10 +"px";
+		})()
 	</script>
 </head>
 <body>
+	<app></app>
 	<script src="js/index.js?rev=@@hash"></script>
 </body>
 </html>

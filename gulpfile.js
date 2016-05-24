@@ -3,7 +3,9 @@ var gulp = require("gulp");
 
 /*** [borwserSync 同步刷新]*/
 var browserSync = require('browser-sync').create();
-var reload = browserSync.reload;
+// var reload = browserSync.reload;
+var reload = require('easy-reload');
+
 
 /** [webpack js模块化工具]*/
 var webpack = require("gulp-webpack");
@@ -49,7 +51,8 @@ var comeIn = {
     js: ["dev/js/index.js"],
     image: "dev/image/*.{png,jpg,gif,ico}",
     sass: "dev/sass/*.scss",
-    html: 'dev/*.html'
+    html: 'dev/*.html',
+    vue:"dev/vue/component/*.vue"
 };
 var output = {
     js: "./product/js/",
@@ -75,19 +78,31 @@ gulp.task("js", function() {
         // .pipe(eslint.format())
         // .pipe(eslint.failAfterError())
         .pipe(named())
-        .pipe(webpack())
+        .pipe(webpack({
+            module: {
+                loaders: [
+                    {test: /\.vue$/,loader: 'vue'},
+                    {test: /\.js$/,loader: 'babel',exclude: /node_modules/}
+                ]
+            },
+            babel: {
+                presets: ['es2015'],
+                plugins: ['transform-runtime']
+            }
+        }))
         .pipe(env == "pro" ? uglify() : stream())
         .pipe(gulp.dest(output.js))
-        .pipe(reload({ stream: true }));
+        .pipe(reload.stream())
+        //.pipe(reload({ stream: true }));
 });
 /**
  * [sass编译]
  */
 gulp.task("sass", function() {
     gulp.src(comeIn.sass).pipe(sass())
-        .pipe(sassLint())
-        .pipe(sassLint.format())
-        .pipe(sassLint.failOnError())
+        // .pipe(sassLint())
+        // .pipe(sassLint.format())
+        // .pipe(sassLint.failOnError())
         // .pipe(csslint())
         // .pipe(csslint.reporter())
         .pipe(autoprefixer({
@@ -99,7 +114,8 @@ gulp.task("sass", function() {
         }))
         .pipe(env == "pro" ? minifyCSS() : stream())
         .pipe(gulp.dest(output.css))
-        .pipe(reload({ stream: true }));
+        .pipe(reload.stream());
+        //.pipe(reload({ stream: true }));
 });
 /**
  * [html压缩]
@@ -111,7 +127,8 @@ gulp.task('html', function() {
         .pipe(append())
         .pipe(env == "pro" ? htmlmin({ collapseWhitespace: true }) : stream())
         .pipe(gulp.dest(output.html))
-        .pipe(reload({ stream: true }))
+        //.pipe(reload({ stream: true }))
+        .pipe(reload.stream());
 });
 /**
  * [默认任务，进行html,js,sass,watch等任务]
@@ -122,6 +139,7 @@ gulp.task('default', ["html", "js", "sass", "image", "watch"], function() {
             baseDir: "./product"
         }
     });
+    reload.init();
 });
 /**
  * [监听文件的变化]
@@ -129,6 +147,7 @@ gulp.task('default', ["html", "js", "sass", "image", "watch"], function() {
 gulp.task('watch', function() {
     gulp.watch(comeIn.sass, ['sass']);
     gulp.watch(comeIn.js, ['js']);
+    gulp.watch(comeIn.vue, ['js']);
     gulp.watch(comeIn.html, ["html"]);
     gulp.watch(comeIn.image, ["image"]);
 });
@@ -144,5 +163,6 @@ gulp.task('image', function() {
             use: [pngquant()] //使用pngquant深度压缩png图片的imagemin插件
         })))
         .pipe(gulp.dest(output.image))
-        .pipe(reload({ stream: true }));
+        //.pipe(reload({ stream: true }))
+        .pipe(reload.stream());
 });
