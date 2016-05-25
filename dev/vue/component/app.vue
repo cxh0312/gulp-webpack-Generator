@@ -25,7 +25,7 @@
 		},
 		methods:{
 			add:function(a,b){
-				return this.el.innerText = a+b;  
+				return this.$el.innerText = a+b;  
 			}
 		},
 		components:{

@@ -122,8 +122,8 @@ gulp.task("sass", function() {
  */
 gulp.task('html', function() {
     gulp.src(comeIn.html)
-        .pipe(htmlhint())
-        .pipe(htmlhint.reporter())
+        // .pipe(htmlhint())
+        // .pipe(htmlhint.reporter())
         .pipe(append())
         .pipe(env == "pro" ? htmlmin({ collapseWhitespace: true }) : stream())
         .pipe(gulp.dest(output.html))

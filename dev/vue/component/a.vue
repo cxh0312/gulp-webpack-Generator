@@ -14,10 +14,3 @@ module.exports =  {
   }
 };
 </script>
-<style lang="sass">
-	@fontSize:48px;
-	.container{
-		background-color:#eee;
-		p{font-size:fontSize;}
-	}
-</style>
