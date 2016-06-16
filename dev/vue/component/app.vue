@@ -1,20 +1,10 @@
 <template>
-  <div class="app">
-  	<p>I love you vue</p>
-	<p>hello {{name}}</p>
-  </div>
-  <ul>
-    <li v-for="item in lists">{{item}}</li>
-  </ul>
-  <h2 @click="add(1,3)">计算</h2>
-  <components-a></components-a>
-  <components-b v-bind:name="name"></components-b>
+	<button @click="Toast">show toast</button>
 </template>
 
 
 <script>
-	var componentsA = require('./a.vue');
-	var componentsB = require('./b.vue');
+	var toast = require('./toast.vue');
 	module.exports = {
 		name:"app",
 		data:function(){
@@ -24,12 +14,14 @@
 			}
 		},
 		methods:{
-			add:function(a,b){
-				return this.$el.innerText = a+b;  
+			Toast:function(text){
+				text = "zidingyi";
+				toast.props.text=text;
+				console.log(this)
 			}
 		},
 		components:{
-			componentsA,componentsB
+			toast
 		}
 	}
 </script>
