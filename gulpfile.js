@@ -3,8 +3,8 @@ var gulp = require("gulp");
 
 /*** [borwserSync 同步刷新]*/
 var browserSync = require('browser-sync').create();
-// var reload = browserSync.reload;
-var reload = require('easy-reload');
+var reload = browserSync.reload;
+//var reload = require('easy-reload');
 
 
 /** [webpack js模块化工具]*/
@@ -47,19 +47,9 @@ var append = require('gulp-rev-append');
 var named = require('vinyl-named');
 var htmlhint = require("gulp-htmlhint");
 
-var comeIn = {
-    js: ["dev/js/index.js"],
-    image: "dev/image/*.{png,jpg,gif,ico}",
-    sass: "dev/sass/*.scss",
-    html: 'dev/*.html',
-    vue:"dev/vue/component/*.vue"
-};
-var output = {
-    js: "./product/js/",
-    image: "product/image",
-    css: "./product/css",
-    html: 'product/'
-};
+var config = require("./config");
+var comeIn = config.in,
+    output = config.out;
 /**
  * [env 当前环境是正式还是测试环境]
  * 默认为测试环境
@@ -72,17 +62,17 @@ var env = argv.env || argv.ENV;
 gulp.task("js", function() {
     gulp.src(comeIn.js)
         .pipe(babel())
-        // .pipe(eslint({
-        //     ecmaFeatures:{defaultParams:true,blockBindings:true,generators:true}
-        // }))
-        // .pipe(eslint.format())
-        // .pipe(eslint.failAfterError())
+        .pipe(eslint({
+            ecmaFeatures: { defaultParams: true, blockBindings: true, generators: true }
+        }))
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError())
         .pipe(named())
         .pipe(webpack({
             module: {
                 loaders: [
-                    {test: /\.vue$/,loader: 'vue'},
-                    {test: /\.js$/,loader: 'babel',exclude: /node_modules/}
+                    { test: /\.vue$/, loader: 'vue' },
+                    { test: /\.js$/, loader: 'babel', exclude: /node_modules/ }
                 ]
             },
             babel: {
@@ -92,8 +82,7 @@ gulp.task("js", function() {
         }))
         .pipe(env == "pro" ? uglify() : stream())
         .pipe(gulp.dest(output.js))
-        .pipe(reload.stream())
-        //.pipe(reload({ stream: true }));
+        .pipe(reload({ stream: true }));
 });
 /**
  * [sass编译]
@@ -114,21 +103,17 @@ gulp.task("sass", function() {
         }))
         .pipe(env == "pro" ? minifyCSS() : stream())
         .pipe(gulp.dest(output.css))
-        .pipe(reload.stream());
-        //.pipe(reload({ stream: true }));
+        .pipe(reload({ stream: true }));
 });
 /**
  * [html压缩]
  */
 gulp.task('html', function() {
     gulp.src(comeIn.html)
-        // .pipe(htmlhint())
-        // .pipe(htmlhint.reporter())
         .pipe(append())
         .pipe(env == "pro" ? htmlmin({ collapseWhitespace: true }) : stream())
         .pipe(gulp.dest(output.html))
-        //.pipe(reload({ stream: true }))
-        .pipe(reload.stream());
+        .pipe(reload({ stream: true }))
 });
 /**
  * [默认任务，进行html,js,sass,watch等任务]
@@ -139,7 +124,6 @@ gulp.task('default', ["html", "js", "sass", "image", "watch"], function() {
             baseDir: "./product"
         }
     });
-    reload.init();
 });
 /**
  * [监听文件的变化]
@@ -163,6 +147,5 @@ gulp.task('image', function() {
             use: [pngquant()] //使用pngquant深度压缩png图片的imagemin插件
         })))
         .pipe(gulp.dest(output.image))
-        //.pipe(reload({ stream: true }))
-        .pipe(reload.stream());
+        .pipe(reload({ stream: true }))
 });
