@@ -1,9 +1,9 @@
 <template>
 	<div class="confirm">
-		<div class="pure-g top">
+		<div class="top">
 			<div class="content" v-html="content"></div>
 		</div>
-		<div class="pure-g bottom" :click="onclick">
+		<div class="bottom" @click="onclick('child-msg')">
 			{{btnText}}
 		</div>
 	</div>
@@ -14,8 +14,8 @@
 		name:"confirm",
 		props:["content","btnText"],
 		methods:{
-			onclick:function(eventType,argument){
-				this.$dispatch(eventType,argument);
+			onclick:function(eventType){
+				this.$dispatch(eventType,"toast","shut");
 			}
 		}
 	}
