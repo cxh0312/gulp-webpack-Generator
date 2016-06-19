@@ -1,12 +1,37 @@
 <template>
 	<button class="pure-button" @click="Toast('show toast')">show toast</button>
+	<group title="我是一个标题"></group>
 	<toast  v-show="toast.show" :text="toast.text"></toast>
+	<modal v-show="toast.show">
+		<confirm  :btn-text="confirm.btnText" :content="confirm.content"></confirm>
+	</modal>
+	<tab :is="currentView" keep-alive>
+		<div slot="tabTitle" class="pure-g">
+			<div class="pure-u-1-4 tc" @click="Change('currentView','tab1Component')">tab1</div>
+			<div class="pure-u-1-4 tc" @click="Change('currentView','tab2Component')">tab2</div>
+			<div class="pure-u-1-4 tc" @click="Change('currentView','tab3Component')">tab3</div>
+			<div class="pure-u-1-4 tc" @click="Change('currentView','tab4Component')">tab4</div>
+		</div>
+		<div slot="tabContent" :is="currentView" transition="opacity" transition-mode="out-in">
+			<tab1-component></tab1-component>
+			<tab2-component></tab2-component>
+			<tab3-component></tab3-component>
+			<tab4-component></tab4-component>
+		</div>
+	</tab>
 </template>
 
 
 <script>
 	var toast = require('./toast.vue');
 	var group = require('./group.vue');
+	var modal = require('./modal.vue');
+	var tab = require('./tab.vue');
+	var confirm = require('./confirm.vue');
+	var tab1Component = require('./tab1Component.vue');
+	var tab2Component = require('./tab2Component.vue');
+	var tab3Component = require('./tab3Component.vue');
+	var tab4Component = require('./tab4Component.vue');
 	module.exports = {
 		name:"app",
 		data:function(){
@@ -14,7 +39,12 @@
 				toast:{
 					text:'',
 					show:false
-				}
+				},
+				confirm:{
+					content:"这是一个demo",
+					btnText:"确定"
+				},
+				currentView:"tab1Component"
 			}
 		},
 		methods:{
@@ -27,10 +57,13 @@
 				setTimeout(function(){
 					self.toast.show = 0;
 				},during)
+			},
+			Change:function(type,value){
+				this[type] = value;
 			}
 		},
 		components:{
-			toast,group
+			toast,group,confirm,modal,tab,tab1Component,tab2Component,tab3Component,tab4Component
 		}
 	}
 </script>
