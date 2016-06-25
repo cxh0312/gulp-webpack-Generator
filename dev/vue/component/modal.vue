@@ -10,7 +10,7 @@
 	}
 </script>
 
-<style>
+<style lang="sass" scoped>
 	.modal{
 		position:fixed;
 		top: 0;

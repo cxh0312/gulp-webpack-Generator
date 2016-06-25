@@ -1,14 +1,26 @@
 <template>
-	<div class="toast" transition="opacity">{{text}}</div>
+	<div class="container" v-show="show">
+		<div class="toast"  transition="opacity">{{text}}</div>	
+	</div>
 </template>
 
 <script>
 module.exports =  {
-  name: 'toast',
-  props:["text"]
+  	name: 'toast',
+  	data:function(){
+  		return{
+  			show:false
+  		}
+  	},
+  	props:{
+  		text:{
+  			type:String,
+  			required:true
+  		}
+  	}
 };
 </script>
-<style>
+<style lang="sass" scoped>
 	.toast{
 		position: fixed;
 	    display: table;

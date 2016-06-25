@@ -2,7 +2,7 @@
 	<button class="pure-button" @click="Toast('show toast')">show toast</button>
 	<button class="pure-button" @click="toggleDisplay('confirm')">show confirm</button>
 	<group title="我是一个标题"></group>
-	<toast  v-show="toast.show" :text="toast.text"></toast>
+	<toast :text="toast.text"></toast>
 	<modal v-show="modal.show">
 		<confirm v-show="confirm.show" :btn-text="confirm.btnText" :content="confirm.content"></confirm>
 	</modal>
@@ -20,19 +20,25 @@
 			<tab4-component></tab4-component>
 		</div>
 	</tab>
+	<div class="flex">
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+	</div>
 </template>
 
 
 <script>
-	var toast = require('./toast.vue');
-	var group = require('./group.vue');
-	var modal = require('./modal.vue');
-	var tab = require('./tab.vue');
-	var confirm = require('./confirm.vue');
-	var tab1Component = require('./tab1Component.vue');
-	var tab2Component = require('./tab2Component.vue');
-	var tab3Component = require('./tab3Component.vue');
-	var tab4Component = require('./tab4Component.vue');
+	var toast = require('./component/toast.vue');
+	var group = require('./component/group.vue');
+	var modal = require('./component/modal.vue');
+	var tab = require('./component/tab.vue');
+	var confirm = require('./component/confirm.vue');
+	var tab1Component = require('./component/tab1Component.vue');
+	var tab2Component = require('./component/tab2Component.vue');
+	var tab3Component = require('./component/tab3Component.vue');
+	var tab4Component = require('./component/tab4Component.vue');
 	module.exports = {
 		name:"app",
 		data:function(){
