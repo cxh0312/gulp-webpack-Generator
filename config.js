@@ -3,7 +3,7 @@ var comeIn = {
     image: "dev/image/**/*.{png,jpg,gif,ico}",
     sass: "dev/sass/**/*.scss",
     html: 'dev/**/*.html',
-    vue: "dev/vue/component/**/*.vue"
+    vue: "dev/vue/**/*.vue"
 };
 var output = {
     js: "./product/js/",
