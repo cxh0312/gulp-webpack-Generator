@@ -27,6 +27,7 @@ var eslint = require('gulp-eslint');
 /*[minifyCSS css压缩]*/
 var minifyCSS = require("gulp-minify-css");
 var htmlmin = require("gulp-htmlmin");
+var replace = require("gulp-replace");
 
 /*图片压缩*/
 var imagemin = require('gulp-imagemin');
@@ -48,14 +49,23 @@ var named = require('vinyl-named');
 var htmlhint = require("gulp-htmlhint");
 
 var config = require("./config");
-var comeIn = config.in,
-    output = config.out;
+
 /**
  * [env 当前环境是正式还是测试环境]
  * 默认为测试环境
  * @type {[type]}
  */
 var env = argv.env || argv.ENV;
+
+var comeIn,output;
+if(env=="pro"){
+    comeIn = config.inPro;
+    output = config.outPro;
+}else{
+    comeIn = config.in;
+    output = config.out;
+}
+
 /**
  * 目标：对JS模块化
  */
@@ -99,7 +109,8 @@ gulp.task("sass", function() {
         }))
         .pipe(base64({
             maxImageSize: 16 * 1024,
-            debug: true
+            debug: true,
+            baseDir:"./dev/image/"
         }))
         .pipe(env == "pro" ? minifyCSS() : stream())
         .pipe(gulp.dest(output.css))
@@ -111,9 +122,10 @@ gulp.task("sass", function() {
 gulp.task('html', function() {
     gulp.src(comeIn.html)
         .pipe(append())
+        .pipe(replace("TIME_STAMP",new Date().getTime()))
         .pipe(env == "pro" ? htmlmin({ collapseWhitespace: true }) : stream())
         .pipe(gulp.dest(output.html))
-        .pipe(reload({ stream: true }))
+        .pipe(reload({ stream: true }));
 });
 /**
  * [默认任务，进行html,js,sass,watch等任务]
@@ -135,8 +147,7 @@ gulp.task('watch', function() {
     gulp.watch(comeIn.html, ["html"]);
     gulp.watch(comeIn.image, ["image"]);
 });
-
-/**
+ /**
  * [图片压缩]
  */
 gulp.task('image', function() {
@@ -147,5 +158,9 @@ gulp.task('image', function() {
             use: [pngquant()] //使用pngquant深度压缩png图片的imagemin插件
         })))
         .pipe(gulp.dest(output.image))
-        .pipe(reload({ stream: true }))
+        .pipe(reload({ stream: true }));
 });
+
+gulp.task("del",function () {
+    del([output.js,output.image,output.css,output.html])
+})

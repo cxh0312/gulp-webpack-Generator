@@ -1,4 +1,4 @@
-'use strict';
+debugger;'use strict';
 var gulp = require("gulp");
 
 /*** [borwserSync 同步刷新]*/
@@ -88,11 +88,11 @@ gulp.task("js", function() {
  */
 gulp.task("sass", function() {
     gulp.src(comeIn.sass).pipe(sass())
-        // .pipe(sassLint())
-        // .pipe(sassLint.format())
-        // .pipe(sassLint.failOnError())
-        // .pipe(csslint())
-        // .pipe(csslint.reporter())
+        .pipe(sassLint())
+        .pipe(sassLint.format())
+        .pipe(sassLint.failOnError())
+        .pipe(csslint())
+        .pipe(csslint.reporter())
         .pipe(autoprefixer({
             browsers: ["> 5%"]
         }))

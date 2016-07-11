@@ -36,3 +36,5 @@ reload.stream();
 1、gulpfile.js中的comeIn和output分别是文件进入和处理之后的路径
 2、默认运行gulp,执行html,sass,image,js等任务
 3、默认为测试环境，打包的静态文件不压缩，需要压缩可以添加参数 --env=pro 或者 --ENV=pro
+4、在windows下直接通过cnpm i 安装gulp-sass会出现问题，所以在package.json中去掉gulp-sass的依赖
+
